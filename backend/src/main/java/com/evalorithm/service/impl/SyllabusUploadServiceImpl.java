@@ -203,7 +203,7 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
             String prompt = "You are an expert professor. Generate exactly " + numQuestions + " multiple choice questions for the topic '" + topic.getName() + "' under the unit '" + unit.getName() + "' for the subject '" + subject.getName() + "'. Return ONLY a JSON array of objects. Each object must have keys: 'questionText', 'optionA', 'optionB', 'optionC', 'optionD', 'correctOption' (must be exactly the string of the correct option text), and 'explanation'. No markdown, no markdown blocks, just raw JSON array.";
 
             Map<String, Object> req = new HashMap<>();
-            req.put("model", "mixtral-8x7b-32768");
+            req.put("model", "openai/gpt-oss-20b");
             req.put("messages", List.of(Map.of("role", "user", "content", prompt)));
             req.put("temperature", 0.3);
 
