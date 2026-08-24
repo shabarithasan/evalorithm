@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="blue_100">#BBDEFB</color>
+    <color name="blue_200">#90CAF9</color>
+    <color name="blue_400">#42A5F5</color>
+    <color name="blue_600">#1565C0</color>
+    <color name="blue_800">#0D47A1</color>
+    <color name="white">#FFFFFF</color>
+    <color name="grey_100">#F5F5F5</color>
+    <color name="grey_200">#EEEEEE</color>
+    <color name="grey_600">#757575</color>
+    <color name="black">#212121</color>
+    <color name="green_600">#2E7D32</color>
+    <color name="green_100">#C8E6C9</color>
+    <color name="orange_600">#EF6C00</color>
+    <color name="orange_100">#FFE0B2</color>
+    <color name="red_600">#C62828</color>
+    <color name="red_100">#FFCDD2</color>
+    <color name="purple_600">#6A1B9A</color>
+    <color name="purple_100">#E1BEE7</color>
+    <color name="teal_600">#00796B</color>
+    <color name="teal_100">#B2DFDB</color>
+    <color name="gold">#FFD700</color>
+    <color name="silver">#C0C0C0</color>
+    <color name="bronze">#CD7F32</color>
+    <color name="ai_purple">#7C4DFF</color>
+    <color name="ai_purple_light">#EDE7F6</color>
+    <color name="chart_blue">#42A5F5</color>
+    <color name="chart_green">#66BB6A</color>
+    <color name="chart_orange">#FFA726</color>
+    <color name="chart_red">#EF5350</color>
+    <color name="chart_purple">#AB47BC</color>
+    <color name="risk_low">#4CAF50</color>
+    <color name="risk_medium">#FF9800</color>
+    <color name="risk_high">#F44336</color>
+</resources>

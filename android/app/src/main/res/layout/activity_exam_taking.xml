@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- Top Bar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue_600"
+        android:padding="12dp"
+        android:gravity="center_vertical">
+
+        <TextView android:id="@+id/tvExamTitle"
+            android:layout_width="0dp" android:layout_height="wrap_content"
+            android:layout_weight="1" android:textColor="@android:color/white"
+            android:textSize="16sp" android:textStyle="bold" />
+
+        <TextView android:id="@+id/tvTimer"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textColor="@android:color/white" android:textSize="18sp"
+            android:textStyle="bold" android:fontFamily="monospace"
+            android:paddingHorizontal="16dp" />
+
+        <TextView android:id="@+id/tvProgress"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:textColor="@android:color/white" android:textSize="14sp" />
+    </LinearLayout>
+
+    <!-- Content Area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <!-- Question Area (70%) -->
+        <ScrollView
+            android:id="@+id/scrollViewQuestion"
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="7">
+
+            <LinearLayout
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:padding="16dp">
+
+                <TextView android:id="@+id/tvQuestionNumber"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textStyle="bold" android:textSize="14sp" />
+
+                <TextView android:id="@+id/tvQuestionType"
+                    android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:textColor="@color/blue_600" android:textSize="12sp"
+                    android:layout_marginTop="4dp" />
+
+                <TextView android:id="@+id/tvQuestionText"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp" android:textSize="16sp" />
+
+                <RadioGroup android:id="@+id/radioOptions"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" android:orientation="vertical"
+                    android:visibility="gone" />
+
+                <EditText android:id="@+id/etTextAnswer"
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp" android:hint="Type your answer"
+                    android:inputType="textMultiLine" android:minLines="3"
+                    android:visibility="gone" android:padding="12dp" />
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Question Palette (30%) -->
+        <LinearLayout
+            android:layout_width="0dp" android:layout_height="match_parent"
+            android:layout_weight="3" android:orientation="vertical"
+            android:padding="8dp" android:background="@color/grey_100">
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Question Palette" android:textStyle="bold" android:textSize="14sp"
+                android:layout_marginBottom="8dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvQuestionPalette"
+                android:layout_width="match_parent" android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <!-- Legend -->
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:orientation="vertical" android:layout_marginTop="8dp">
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="● Answered" android:textColor="#4CAF50" android:textSize="11sp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="● Not Answered" android:textColor="#F44336" android:textSize="11sp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="● Marked for Review" android:textColor="#9C27B0" android:textSize="11sp" />
+                <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                    android:text="● Not Visited" android:textColor="#9E9E9E" android:textSize="11sp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Bottom Navigation -->
+    <LinearLayout
+        android:layout_width="match_parent" android:layout_height="wrap_content"
+        android:orientation="horizontal" android:padding="8dp"
+        android:background="@android:color/white" android:elevation="8dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnPrevious" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="Previous" style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_marginEnd="4dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMarkReview" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="Mark Review" android:layout_marginHorizontal="4dp"
+            style="@style/Widget.Material3.Button.OutlinedButton" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnNext" android:layout_width="0dp"
+            android:layout_height="wrap_content" android:layout_weight="1"
+            android:text="Next" android:layout_marginStart="4dp" />
+    </LinearLayout>
+</LinearLayout>

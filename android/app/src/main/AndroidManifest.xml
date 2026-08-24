@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <application
+        android:name=".EvalorithmApp"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Evalorithm">
+        <activity
+            android:name=".ui.auth.LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ui.auth.RegisterActivity" />
+        <activity android:name=".ui.admin.AdminDashboardActivity" />
+        <activity android:name=".ui.faculty.FacultyDashboardActivity" />
+        <activity android:name=".ui.student.StudentDashboardActivity" />
+        <activity android:name=".ui.common.ProfileActivity" />
+        <activity android:name=".ui.admin.QuestionBankActivity" />
+        <activity android:name=".ui.admin.QuestionDetailActivity" />
+        <activity android:name=".ui.admin.QuestionCreateActivity" />
+        <activity android:name=".ui.admin.QuestionCategoryActivity" />
+        <activity android:name=".ui.admin.QuestionDashboardActivity" />
+        <activity android:name=".ui.student.StudentExamListActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.student.ExamTakingActivity" android:theme="@style/Theme.Evalorithm" android:screenOrientation="landscape" />
+        <activity android:name=".ui.student.ExamResultActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.admin.ExamManagementActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.admin.ExamDetailActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.student.StudentAnalyticsActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.student.AdaptiveTestActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.student.RecommendationsActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.student.PredictionsActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.student.InsightsActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.student.LeaderboardActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.admin.AdminAnalyticsActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.student.StudentCertificatesActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.student.StudentFeedbackActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.student.StudentHelpActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.admin.OBEAssessmentActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.admin.CertificateManagementActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.admin.ReportsActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.admin.SystemSettingsActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.admin.BackupActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.admin.AuditLogActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.admin.AdminMonitoringActivity" android:theme="@style/Theme.Evalorithm" />
+        <activity android:name=".ui.common.QRScannerActivity" android:theme="@style/Theme.Evalorithm" />
+    </application>
+</manifest>

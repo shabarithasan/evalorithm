@@ -1,0 +1,31 @@
+package com.evalorithm.data.model
+
+data class Exam(
+    val id: Long,
+    val title: String,
+    val description: String?,
+    val examType: String,
+    val status: String,
+    val startDate: String,
+    val endDate: String,
+    val durationMinutes: Int,
+    val totalMarks: Int,
+    val passingMarks: Int,
+    val maxAttempts: Int,
+    val negativeMarksEnabled: Boolean,
+    val negativeMarksValue: Double,
+    val randomizeQuestions: Boolean,
+    val randomizeOptions: Boolean,
+    val showResultsImmediately: Boolean,
+    val autoSubmit: Boolean,
+    val departmentId: Long?,
+    val departmentName: String?,
+    val semesterId: Long?,
+    val semesterNumber: Int?,
+    val subjectId: Long?,
+    val subjectName: String?,
+    val createdByName: String?,
+    val questionCount: Int,
+    val studentCount: Int,
+    val createdAt: String
+)

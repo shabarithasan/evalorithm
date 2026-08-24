@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment">
+
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.evalorithm.ui.auth.LoginActivity" />
+
+    <activity
+        android:id="@+id/registerActivity"
+        android:name="com.evalorithm.ui.auth.RegisterActivity" />
+
+    <activity
+        android:id="@+id/adminDashboardActivity"
+        android:name="com.evalorithm.ui.admin.AdminDashboardActivity" />
+
+    <activity
+        android:id="@+id/facultyDashboardActivity"
+        android:name="com.evalorithm.ui.faculty.FacultyDashboardActivity" />
+
+    <activity
+        android:id="@+id/studentDashboardActivity"
+        android:name="com.evalorithm.ui.student.StudentDashboardActivity" />
+
+    <activity
+        android:id="@+id/profileActivity"
+        android:name="com.evalorithm.ui.common.ProfileActivity" />
+</navigation>

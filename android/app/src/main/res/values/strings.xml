@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">EVALORITHM</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="no_account">Don\'t have an account?</string>
+    <string name="has_account">Already have an account?</string>
+    <string name="dashboard">Dashboard</string>
+    <string name="departments">Departments</string>
+    <string name="subjects">Subjects</string>
+    <string name="faculty">Faculty</string>
+    <string name="students">Students</string>
+    <string name="profile">Profile</string>
+    <string name="logout">Logout</string>
+    <string name="settings">Settings</string>
+    <string name="notifications">Notifications</string>
+    <string name="search">Search</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="question_bank">Question Bank</string>
+    <string name="question_dashboard">Question Dashboard</string>
+    <string name="question_categories">Question Categories</string>
+    <string name="create_question">Create Question</string>
+    <string name="question_detail">Question Detail</string>
+    <string name="save_draft">Save Draft</string>
+    <string name="submit_for_review">Submit for Review</string>
+    <string name="approve">Approve</string>
+    <string name="reject">Reject</string>
+    <string name="archive">Archive</string>
+    <string name="restore">Restore</string>
+    <string name="duplicate">Duplicate</string>
+    <string name="no_questions_found">No questions found</string>
+    <string name="no_categories_found">No categories found</string>
+    <string name="total_questions">Total Questions</string>
+    <string name="approved_questions">Approved</string>
+    <string name="pending_questions">Pending</string>
+    <string name="rejected_questions">Rejected</string>
+    <string name="recently_added">Recently Added</string>
+</resources>

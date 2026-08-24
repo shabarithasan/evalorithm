@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_dashboard"
+        android:title="Dashboard"
+        android:icon="@drawable/ic_dashboard" />
+    <item
+        android:id="@+id/nav_departments"
+        android:title="Departments"
+        android:icon="@drawable/ic_department" />
+    <item
+        android:id="@+id/nav_subjects"
+        android:title="Subjects"
+        android:icon="@drawable/ic_subject" />
+    <item
+        android:id="@+id/nav_faculty"
+        android:title="Faculty"
+        android:icon="@drawable/ic_faculty" />
+    <item
+        android:id="@+id/nav_students"
+        android:title="Students"
+        android:icon="@drawable/ic_student" />
+    <item
+        android:id="@+id/nav_question_dashboard"
+        android:title="Question Dashboard"
+        android:icon="@drawable/ic_quiz" />
+    <item
+        android:id="@+id/nav_question_bank"
+        android:title="Question Bank"
+        android:icon="@drawable/ic_search" />
+    <item
+        android:id="@+id/nav_question_categories"
+        android:title="Question Categories"
+        android:icon="@drawable/ic_menu" />
+    <item
+        android:id="@+id/nav_analytics"
+        android:title="Analytics"
+        android:icon="@drawable/ic_analytics_chart" />
+    <item
+        android:id="@+id/nav_obe_assessment"
+        android:title="OBE Assessment"
+        android:icon="@drawable/ic_certificate" />
+    <item
+        android:id="@+id/nav_certificates"
+        android:title="Certificates"
+        android:icon="@drawable/ic_certificate" />
+    <item
+        android:id="@+id/nav_reports"
+        android:title="Reports"
+        android:icon="@drawable/ic_analytics_chart" />
+    <item
+        android:id="@+id/nav_audit_logs"
+        android:title="Audit Logs"
+        android:icon="@drawable/ic_audit" />
+    <item
+        android:id="@+id/nav_backup"
+        android:title="Backup & Recovery"
+        android:icon="@drawable/ic_backup" />
+    <item
+        android:id="@+id/nav_monitoring"
+        android:title="System Monitor"
+        android:icon="@drawable/ic_monitor" />
+    <item
+        android:id="@+id/nav_settings"
+        android:title="Settings"
+        android:icon="@drawable/ic_settings" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_profile"
+            android:title="Profile"
+            android:icon="@drawable/ic_profile" />
+        <item
+            android:id="@+id/nav_logout"
+            android:title="Logout"
+            android:icon="@drawable/ic_logout" />
+    </group>
+</menu>

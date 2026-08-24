@@ -1,0 +1,27 @@
+﻿
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v3.2.5)
+
+2026-07-29T21:46:13.054+05:30  INFO 8252 --- [           main] com.evalorithm.EvalorithmApplication     : Starting EvalorithmApplication v1.0.0 using Java 17.0.12 with PID 8252 (V:\college\college\evalorithm\backend\target\evalorithm-backend-1.0.0.jar started by veera in C:\Users\veera\Documents)
+2026-07-29T21:46:13.060+05:30  INFO 8252 --- [           main] com.evalorithm.EvalorithmApplication     : The following 1 profile is active: "h2"
+2026-07-29T21:46:16.051+05:30  INFO 8252 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-07-29T21:46:16.494+05:30  INFO 8252 --- [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 428 ms. Found 50 JPA repository interfaces.
+2026-07-29T21:46:18.307+05:30  INFO 8252 --- [           main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2026-07-29T21:46:18.326+05:30  INFO 8252 --- [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-07-29T21:46:18.332+05:30  INFO 8252 --- [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.20]
+2026-07-29T21:46:18.424+05:30  INFO 8252 --- [           main] o.a.c.c.C.[Tomcat].[localhost].[/api]    : Initializing Spring embedded WebApplicationContext
+2026-07-29T21:46:18.424+05:30  INFO 8252 --- [           main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 5186 ms
+2026-07-29T21:46:18.705+05:30  INFO 8252 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-07-29T21:46:19.188+05:30  INFO 8252 --- [           main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:evalorithm user=SA
+2026-07-29T21:46:19.192+05:30  INFO 8252 --- [           main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-07-29T21:46:19.208+05:30  INFO 8252 --- [           main] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:evalorithm'
+2026-07-29T21:46:19.592+05:30  INFO 8252 --- [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-07-29T21:46:19.732+05:30  INFO 8252 --- [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.4.4.Final
+2026-07-29T21:46:19.813+05:30  INFO 8252 --- [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-07-29T21:46:20.342+05:30  INFO 8252 --- [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-07-29T21:46:20.450+05:30  WARN 8252 --- [           main] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
