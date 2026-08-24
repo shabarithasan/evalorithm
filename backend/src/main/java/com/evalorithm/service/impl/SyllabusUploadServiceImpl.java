@@ -215,6 +215,9 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
                     org.springframework.http.HttpEntity<Map<String, Object>> entity = new org.springframework.http.HttpEntity<>(req, headers);
                     response = restTemplate.postForObject("https://api.groq.com/openai/v1/chat/completions", entity, String.class);
                 } catch (Exception groqErr) {
+                    if (groqErr.getMessage() != null && groqErr.getMessage().contains("429")) {
+                        throw groqErr; // Rethrow so the outer loop can sleep and retry!
+                    }
                     log.warn("Groq API failed (" + groqErr.getMessage() + "), falling back to OpenRouter...");
                     String orKey = System.getenv("OPENROUTER_API_KEY");
                     if (orKey == null) {
