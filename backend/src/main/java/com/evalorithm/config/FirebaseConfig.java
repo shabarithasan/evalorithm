@@ -17,7 +17,15 @@ public class FirebaseConfig {
         // TODO: The user will need to provide their service account key file
         // For local development, this could be a path, but in production, we'd use env vars
         try {
-            FileInputStream serviceAccount = new FileInputStream("serviceAccountKey.json");
+            FileInputStream serviceAccount;
+            try {
+                // Try Render's Docker secret file path first
+                serviceAccount = new FileInputStream("/etc/secrets/serviceAccountKey.json");
+            } catch (Exception ex) {
+                // Fallback to local path
+                serviceAccount = new FileInputStream("serviceAccountKey.json");
+            }
+            
             FirebaseOptions options = FirebaseOptions.builder()
                 .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                 .build();
