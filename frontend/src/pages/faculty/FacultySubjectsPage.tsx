@@ -103,7 +103,16 @@ const FacultySubjectsPage: React.FC = () => {
     try {
       const response = await subjectService.getAll(0, 100);
       if (response.success) {
-        setSubjects(response.data.content);
+        const subjectsList = response.data.content;
+        setSubjects(subjectsList);
+        // Pre-load units for all subjects to show the correct Unit count
+        subjectsList.forEach((sub: Subject) => {
+          unitService.getBySubject(sub.id).then(res => {
+            if (res.success) {
+              setUnitsBySubject(prev => ({ ...prev, [sub.id]: res.data }));
+            }
+          }).catch(() => {});
+        });
       }
     } catch (err: any) {
       setError(err.response?.data?.message || 'Failed to load subjects');
@@ -153,22 +162,13 @@ const FacultySubjectsPage: React.FC = () => {
         const response = await unitService.getBySubject(subjectId);
         const units = response.success ? response.data : [];
         setUnitsBySubject((prev) => ({ ...prev, [subjectId]: units }));
-        units.forEach((unit) => {
-          if (topicsByUnit[unit.id] === undefined) {
-            topicService.getByUnit(unit.id).then((res) => {
-              if (res.success) {
-                setTopicsByUnit((prev) => ({ ...prev, [unit.id]: res.data }));
-              }
-            }).catch(() => {});
-          }
-        });
       } catch {
         setUnitsBySubject((prev) => ({ ...prev, [subjectId]: [] }));
       } finally {
         setSyllabusLoading((prev) => ({ ...prev, [subjectId]: false }));
       }
     },
-    [topicsByUnit]
+    []
   );
 
   const handleSubjectExpand = (subjectId: number, expanded: boolean) => {
