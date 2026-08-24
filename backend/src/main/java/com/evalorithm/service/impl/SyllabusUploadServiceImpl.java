@@ -194,9 +194,11 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
         if (groqKey == null) {
             groqKey = "placeholder_key_replace_me_in_env";
         }
-        try {
-            org.springframework.web.client.RestTemplate restTemplate = new org.springframework.web.client.RestTemplate();
-            org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
+        int maxRetries = 3;
+        for (int attempt = 0; attempt < maxRetries; attempt++) {
+            try {
+                org.springframework.web.client.RestTemplate restTemplate = new org.springframework.web.client.RestTemplate();
+                org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
             headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
             headers.setBearerAuth(groqKey);
 
@@ -276,9 +278,19 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
                 aiQuestionRepository.save(ai);
                 result.add(q);
             }
-        } catch (Exception e) {
-            log.error("Groq API error", e);
-            throw new BadRequestException("AI Exam Generation Failed! Please ensure GROQ_API_KEY is correctly set in your backend environment variables. Error details: " + e.getMessage());
+                return result;
+            } catch (Exception e) {
+                if (e.getMessage() != null && e.getMessage().contains("429")) {
+                    log.warn("Rate limit hit, attempt " + (attempt + 1) + " of " + maxRetries + ". Waiting 12 seconds...");
+                    if (attempt == maxRetries - 1) {
+                        throw new BadRequestException("AI Exam Generation Failed! Rate limit exceeded too many times.");
+                    }
+                    try { Thread.sleep(12000); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
+                } else {
+                    log.error("Groq API error", e);
+                    throw new BadRequestException("AI Exam Generation Failed! Error details: " + e.getMessage());
+                }
+            }
         }
         return result;
     }
