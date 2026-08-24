@@ -278,6 +278,7 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
             }
         } catch (Exception e) {
             log.error("Groq API error", e);
+            throw new BadRequestException("AI Exam Generation Failed! Please ensure GROQ_API_KEY is correctly set in your backend environment variables. Error details: " + e.getMessage());
         }
         return result;
     }
