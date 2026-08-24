@@ -247,10 +247,10 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
                 q = questionRepository.save(q);
                 
                 List<MCQOption> mcqOptions = new ArrayList<>();
-                mcqOptions.add(MCQOption.builder().question(q).optionText(optA).isCorrect(optA.equals(correct)).build());
-                mcqOptions.add(MCQOption.builder().question(q).optionText(optB).isCorrect(optB.equals(correct)).build());
-                mcqOptions.add(MCQOption.builder().question(q).optionText(optC).isCorrect(optC.equals(correct)).build());
-                mcqOptions.add(MCQOption.builder().question(q).optionText(optD).isCorrect(optD.equals(correct)).build());
+                mcqOptions.add(MCQOption.builder().question(q).optionLabel("A").optionText(optA).isCorrect(optA.equals(correct)).build());
+                mcqOptions.add(MCQOption.builder().question(q).optionLabel("B").optionText(optB).isCorrect(optB.equals(correct)).build());
+                mcqOptions.add(MCQOption.builder().question(q).optionLabel("C").optionText(optC).isCorrect(optC.equals(correct)).build());
+                mcqOptions.add(MCQOption.builder().question(q).optionLabel("D").optionText(optD).isCorrect(optD.equals(correct)).build());
                 q.getMcqOptions().addAll(mcqOptions);
                 q = questionRepository.save(q);
                 
