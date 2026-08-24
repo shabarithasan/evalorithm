@@ -208,6 +208,7 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
             req.put("model", "openai/gpt-oss-20b");
             req.put("messages", List.of(Map.of("role", "user", "content", prompt)));
             req.put("temperature", 0.3);
+            req.put("max_tokens", 8000);
 
             org.springframework.http.HttpEntity<Map<String, Object>> entity = new org.springframework.http.HttpEntity<>(req, headers);
             
