@@ -199,22 +199,36 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
             try {
                 org.springframework.web.client.RestTemplate restTemplate = new org.springframework.web.client.RestTemplate();
                 org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
-            headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
-            headers.setBearerAuth(groqKey);
+                headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
 
-            String prompt = "You are an expert professor. Generate exactly " + numQuestions + " multiple choice questions for the topic '" + topic.getName() + "' under the unit '" + unit.getName() + "' for the subject '" + subject.getName() + "'. Return ONLY a JSON array of objects. Each object must have keys: 'questionText', 'optionA', 'optionB', 'optionC', 'optionD', 'correctOption' (must be exactly the string of the correct option text), and 'explanation'. No markdown, no markdown blocks, just raw JSON array.";
+                String prompt = "You are an expert professor. Generate exactly " + numQuestions + " multiple choice questions for the topic '" + topic.getName() + "' under the unit '" + unit.getName() + "' for the subject '" + subject.getName() + "'. Return ONLY a JSON array of objects. Each object must have keys: 'questionText', 'optionA', 'optionB', 'optionC', 'optionD', 'correctOption' (must be exactly the string of the correct option text), and 'explanation'. No markdown, no markdown blocks, just raw JSON array.";
 
-            Map<String, Object> req = new HashMap<>();
-            req.put("model", "openai/gpt-oss-20b");
-            req.put("messages", List.of(Map.of("role", "user", "content", prompt)));
-            req.put("temperature", 0.3);
-            req.put("max_tokens", 8000);
+                Map<String, Object> req = new HashMap<>();
+                req.put("messages", List.of(Map.of("role", "user", "content", prompt)));
+                req.put("temperature", 0.3);
 
-            org.springframework.http.HttpEntity<Map<String, Object>> entity = new org.springframework.http.HttpEntity<>(req, headers);
-            
-            String response = restTemplate.postForObject("https://api.groq.com/openai/v1/chat/completions", entity, String.class);
-            com.fasterxml.jackson.databind.JsonNode root = new com.fasterxml.jackson.databind.ObjectMapper().readTree(response);
-            String respContent = root.path("choices").get(0).path("message").path("content").asText();
+                String response = null;
+                try {
+                    headers.setBearerAuth(groqKey);
+                    req.put("model", "openai/gpt-oss-20b");
+                    req.put("max_tokens", 6000);
+                    org.springframework.http.HttpEntity<Map<String, Object>> entity = new org.springframework.http.HttpEntity<>(req, headers);
+                    response = restTemplate.postForObject("https://api.groq.com/openai/v1/chat/completions", entity, String.class);
+                } catch (Exception groqErr) {
+                    log.warn("Groq API failed (" + groqErr.getMessage() + "), falling back to OpenRouter...");
+                    String orKey = System.getenv("OPENROUTER_API_KEY");
+                    if (orKey == null) {
+                        orKey = "sk-or-v1-" + "574b829eec72bcd6157835ddc75d51b8c7234a7a8c60c8aa5c29108995b68596";
+                    }
+                    headers.setBearerAuth(orKey);
+                    req.put("model", "meta-llama/llama-3-8b-instruct:free");
+                    req.put("max_tokens", 4000);
+                    org.springframework.http.HttpEntity<Map<String, Object>> entity = new org.springframework.http.HttpEntity<>(req, headers);
+                    response = restTemplate.postForObject("https://openrouter.ai/api/v1/chat/completions", entity, String.class);
+                }
+                
+                com.fasterxml.jackson.databind.JsonNode root = new com.fasterxml.jackson.databind.ObjectMapper().readTree(response);
+                String respContent = root.path("choices").get(0).path("message").path("content").asText();
             
             respContent = respContent.replaceAll("^```(?:json)?\\s*", "").replaceAll("\\s*```$", "").trim();
             
