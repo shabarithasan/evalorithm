@@ -106,7 +106,12 @@ const FacultyExamPage: React.FC = () => {
 
   return (
     <Box>
-      <PageHeader title="Exams" subtitle="Manage exams for your subjects" />
+      <PageHeader 
+        title="Exams" 
+        subtitle="Manage exams for your subjects" 
+        actionLabel="Create Exam"
+        onAction={() => navigate('/faculty/exams/create')}
+      />
       <DataTable
         columns={columns}
         rows={exams}

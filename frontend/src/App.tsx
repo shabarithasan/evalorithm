@@ -28,6 +28,7 @@ import FacultyDashboard from './pages/faculty/FacultyDashboard';
 import FacultySubjectsPage from './pages/faculty/FacultySubjectsPage';
 import FacultyExamPage from './pages/faculty/FacultyExamPage';
 import FacultyExamResultsPage from './pages/faculty/FacultyExamResultsPage';
+import FacultyExamCreatePage from './pages/faculty/FacultyExamCreatePage';
 import StudentDashboard from './pages/student/StudentDashboard';
 import StudentSubjectsPage from './pages/student/StudentSubjectsPage';
 import ExamListPage from './pages/student/ExamListPage';
@@ -448,6 +449,14 @@ const App: React.FC = () => {
                 element={
                   <ProtectedRoute roles={['ROLE_FACULTY']}>
                     <FacultyExamPage />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/faculty/exams/create"
+                element={
+                  <ProtectedRoute roles={['ROLE_FACULTY']}>
+                    <FacultyExamCreatePage />
                   </ProtectedRoute>
                 }
               />
