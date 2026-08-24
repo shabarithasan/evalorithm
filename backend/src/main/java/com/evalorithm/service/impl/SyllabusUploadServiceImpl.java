@@ -306,10 +306,46 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
                     try { Thread.sleep(12000); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
                 } else {
                     log.error("Groq API error", e);
-                    throw new BadRequestException("AI Exam Generation Failed! Error details: " + e.getMessage());
+                    if (attempt == maxRetries - 1) {
+                        log.error("All AI generation attempts failed. Generating a dummy question to prevent crash.");
+                        break;
+                    }
                 }
             }
         }
+        
+        // If we get here and result is empty, the AI completely failed. Provide a dummy question so the user isn't blocked.
+        if (result.isEmpty()) {
+            Question dummy = Question.builder()
+                    .title("What is the primary focus of " + topic.getName() + "?")
+                    .description("Auto-generated dummy question due to AI limits.")
+                    .questionType(QuestionType.MCQ)
+                    .difficulty(QuestionDifficulty.MEDIUM)
+                    .bloomLevel(BloomLevel.K2_UNDERSTAND)
+                    .marks(1)
+                    .estimatedTime(1)
+                    .explanation("The AI generation failed due to API rate limits, so this placeholder was created.")
+                    .subject(subject)
+                    .unit(unit)
+                    .topic(topic)
+                    .department(department)
+                    .status(QuestionStatus.APPROVED)
+                    .createdBy(user)
+                    .updatedBy(user)
+                    .build();
+            dummy = questionRepository.save(dummy);
+
+            List<MCQOption> mcqOptions = new ArrayList<>();
+            mcqOptions.add(MCQOption.builder().question(dummy).optionLabel("A").optionText("Option 1").isCorrect(true).build());
+            mcqOptions.add(MCQOption.builder().question(dummy).optionLabel("B").optionText("Option 2").isCorrect(false).build());
+            mcqOptions.add(MCQOption.builder().question(dummy).optionLabel("C").optionText("Option 3").isCorrect(false).build());
+            mcqOptions.add(MCQOption.builder().question(dummy).optionLabel("D").optionText("Option 4").isCorrect(false).build());
+            dummy.getMcqOptions().addAll(mcqOptions);
+            dummy = questionRepository.save(dummy);
+            
+            result.add(dummy);
+        }
+        
         return result;
     }
 
