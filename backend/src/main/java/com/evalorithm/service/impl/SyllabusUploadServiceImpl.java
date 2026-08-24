@@ -120,7 +120,7 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
             List<Question> unitQuestions = new ArrayList<>();
             
             int numTopics = topicStruct.getTopics().size();
-            int questionsPerTopic = numTopics > 0 ? Math.max(1, 25 / numTopics) : 0;
+            int questionsPerTopic = numTopics > 0 ? Math.max(1, 10 / numTopics) : 0;
 
             for (String topicName : topicStruct.getTopics()) {
                 String cleanTopic = topicName.replaceAll("^[-•·\\s]+", "").trim();
