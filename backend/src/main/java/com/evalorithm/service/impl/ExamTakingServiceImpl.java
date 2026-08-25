@@ -280,6 +280,8 @@ public class ExamTakingServiceImpl implements ExamTakingService {
                 .currentQuestionIndex(Math.min(currentIndex, liveQuestions.size() - 1))
                 .timeRemainingSeconds(timeRemaining)
                 .attemptId(attempt.getId())
+                .preventTabSwitch(exam.getPreventTabSwitch())
+                .fullscreenRequired(exam.getFullscreenRequired())
                 .build();
     }
 

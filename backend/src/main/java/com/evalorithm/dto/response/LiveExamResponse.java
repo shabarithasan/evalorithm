@@ -22,6 +22,8 @@ public class LiveExamResponse {
     private Integer currentQuestionIndex;
     private Long timeRemainingSeconds;
     private Long attemptId;
+    private Boolean preventTabSwitch;
+    private Boolean fullscreenRequired;
 
     @Data
     @NoArgsConstructor
