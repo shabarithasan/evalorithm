@@ -51,7 +51,17 @@ public class ExamTakingServiceImpl implements ExamTakingService {
                 .orElseThrow(() -> new ResourceNotFoundException("StudentProfile", "id", studentId));
 
         if (!examStudentRepository.existsByExamIdAndStudentProfileId(examId, studentId)) {
-            throw new BadRequestException("You are not assigned to this exam");
+            if (exam.getExamType() == com.evalorithm.enums.ExamType.PRACTICE_TEST) {
+                ExamStudent es = ExamStudent.builder()
+                        .exam(exam)
+                        .studentProfile(student)
+                        .assignedAt(LocalDateTime.now())
+                        .isEligible(true)
+                        .build();
+                examStudentRepository.save(es);
+            } else {
+                throw new BadRequestException("You are not assigned to this exam");
+            }
         }
 
         List<ExamAttempt> previousAttempts = examAttemptRepository.findByExamIdAndStudentProfileId(examId, studentId);
