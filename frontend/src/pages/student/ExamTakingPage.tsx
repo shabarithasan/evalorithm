@@ -578,11 +578,72 @@ const ExamTakingPage: React.FC = () => {
       </Box>
 
       {preventTabSwitch && !isSubmitted && (
-        <Box sx={{ position: 'fixed', bottom: 16, left: 16, width: 240, zIndex: 1000, boxShadow: 3, borderRadius: 2, overflow: 'hidden', bgcolor: 'background.paper', border: '2px solid', borderColor: 'primary.main' }}>
-          <Box sx={{ p: 0.5, bgcolor: 'primary.main', color: 'white', textAlign: 'center', typography: 'caption', fontWeight: 'bold' }}>
+        <Box 
+          sx={{ 
+            position: 'fixed', 
+            bottom: 24, 
+            left: 24, 
+            width: 240, 
+            height: 180,
+            zIndex: 1000, 
+            boxShadow: '0 0 15px rgba(255, 0, 0, 0.6)', 
+            borderRadius: 3, 
+            overflow: 'hidden', 
+            bgcolor: 'black', 
+            border: '3px solid #ff1744' 
+          }}
+        >
+          {/* REC Badge */}
+          <Box sx={{
+            position: 'absolute',
+            top: 12,
+            left: 12,
+            bgcolor: '#ff1744',
+            color: 'white',
+            px: 1,
+            py: 0.25,
+            borderRadius: 1,
+            typography: 'caption',
+            fontWeight: 'bold',
+            zIndex: 2,
+            animation: 'pulse 1.5s infinite',
+            '@keyframes pulse': {
+              '0%': { opacity: 1 },
+              '50%': { opacity: 0.5 },
+              '100%': { opacity: 1 },
+            }
+          }}>
+            REC
+          </Box>
+          
+          {/* Webcam feed */}
+          <Webcam 
+            ref={webcamRef} 
+            audio={false} 
+            style={{ 
+              width: '100%', 
+              height: '100%', 
+              objectFit: 'cover',
+              transform: 'scaleX(-1)' // Mirror the webcam
+            }} 
+          />
+
+          {/* Proctor Message Overlay */}
+          <Box sx={{ 
+            position: 'absolute', 
+            bottom: 0, 
+            left: 0, 
+            right: 0, 
+            p: 1, 
+            background: 'linear-gradient(transparent, rgba(0,0,0,0.8))', 
+            color: 'white', 
+            textAlign: 'center', 
+            typography: 'caption', 
+            fontWeight: 'bold',
+            zIndex: 2
+          }}>
             {proctorMessage}
           </Box>
-          <Webcam ref={webcamRef} audio={false} width={240} style={{ display: 'block' }} />
         </Box>
       )}
 
