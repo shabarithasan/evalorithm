@@ -269,6 +269,7 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
                 .preventTabSwitch(true)
                 .department(department)
                 .subject(subject)
+                .semester(subject.getSemester())
                 .createdBy(user)
                 .build();
 
