@@ -35,6 +35,7 @@ public class ExamServiceImpl implements ExamService {
     private final StudentProfileRepository studentProfileRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public PageResponse<ExamResponse> getAllExams(Pageable pageable, String search, String status,
                                                   String examType, Long departmentId) {
         ExamStatus examStatus = null;
@@ -54,6 +55,7 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ExamDetailResponse getExamById(Long id) {
         Exam exam = examRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Exam", "id", id));
@@ -360,6 +362,7 @@ public class ExamServiceImpl implements ExamService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public ExamDashboardResponse getExamDashboard() {
         long total = examRepository.count();
         long active = examRepository.countByStatus(ExamStatus.ACTIVE);
