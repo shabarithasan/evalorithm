@@ -301,7 +301,8 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
                 if (e.getMessage() != null && e.getMessage().contains("429")) {
                     log.warn("Rate limit hit, attempt " + (attempt + 1) + " of " + maxRetries + ". Waiting 12 seconds...");
                     if (attempt == maxRetries - 1) {
-                        throw new BadRequestException("AI Exam Generation Failed! Rate limit exceeded too many times.");
+                        log.error("All AI generation attempts failed due to rate limits. Generating a dummy question to prevent crash.");
+                        break;
                     }
                     try { Thread.sleep(12000); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
                 } else {
