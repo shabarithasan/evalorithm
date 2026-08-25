@@ -483,6 +483,9 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
                     }
                 }
             }
+            if (topicList.isEmpty()) {
+                topicList.add("General concepts and overview");
+            }
 
             SyllabusUploadResponse.TopicStructure structure = SyllabusUploadResponse.TopicStructure.builder()
                     .unitName(resolveUnitName(unitHeader, unitContent))
