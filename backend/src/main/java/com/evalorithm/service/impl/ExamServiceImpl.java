@@ -46,8 +46,7 @@ public class ExamServiceImpl implements ExamService {
         if (examType != null) {
             type = com.evalorithm.enums.ExamType.valueOf(examType);
         }
-        Page<Exam> page = examRepository.findByFiltersWithStatus(
-                departmentId, null, null, examStatus, type, search, pageable);
+        Page<Exam> page = examRepository.findAll(pageable);
         List<ExamResponse> content = page.getContent().stream()
                 .map(this::mapToResponse)
                 .toList();
