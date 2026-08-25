@@ -123,14 +123,17 @@ const ExamTakingPage: React.FC = () => {
     const interval = setInterval(async () => {
       if (webcamRef.current && webcamRef.current.video && webcamRef.current.video.readyState === 4) {
         const video = webcamRef.current.video;
-        const predictions = await model.detect(video);
+        // Lower minimum score to 0.3 to aggressively catch phones even if blurry or close up
+        const predictions = await model.detect(video, 20, 0.3);
         
         let hasPerson = false;
         let hasPhone = false;
 
+        const forbiddenItems = ['cell phone', 'laptop', 'tv', 'remote', 'tablet'];
+
         predictions.forEach((prediction: any) => {
           if (prediction.class === 'person') hasPerson = true;
-          if (prediction.class === 'cell phone') hasPhone = true;
+          if (forbiddenItems.includes(prediction.class)) hasPhone = true;
         });
 
         if (hasPhone) {
