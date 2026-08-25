@@ -582,7 +582,7 @@ const ExamTakingPage: React.FC = () => {
           sx={{ 
             position: 'fixed', 
             bottom: 24, 
-            left: 24, 
+            right: 24, 
             width: 240, 
             height: 180,
             zIndex: 1000, 
