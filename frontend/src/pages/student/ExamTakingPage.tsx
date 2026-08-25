@@ -123,13 +123,13 @@ const ExamTakingPage: React.FC = () => {
     const interval = setInterval(async () => {
       if (webcamRef.current && webcamRef.current.video && webcamRef.current.video.readyState === 4) {
         const video = webcamRef.current.video;
-        // Lower minimum score to 0.3 to aggressively catch phones even if blurry or close up
-        const predictions = await model.detect(video, 20, 0.3);
+        // Ultra-aggressive: 0.2 score to catch ANY part of a phone or screen
+        const predictions = await model.detect(video, 20, 0.2);
         
         let hasPerson = false;
         let hasPhone = false;
 
-        const forbiddenItems = ['cell phone', 'laptop', 'tv', 'remote', 'tablet'];
+        const forbiddenItems = ['cell phone', 'laptop', 'tv', 'remote', 'tablet', 'book']; // included book just in case it looks like phone back
 
         predictions.forEach((prediction: any) => {
           if (prediction.class === 'person') hasPerson = true;
@@ -140,19 +140,30 @@ const ExamTakingPage: React.FC = () => {
           setSubmitDialogOpen(true);
           setSnackbar({
             open: true,
-            message: 'Cell phone detected! The exam has been locked and will be submitted.',
+            message: 'Device detected! The exam has been locked for cheating and will be submitted.',
             severity: 'error',
           });
           window.dispatchEvent(new Event('force-submit-exam'));
         } else if (!hasPerson) {
-          setSnackbar({
-            open: true,
-            message: 'No face detected! Please stay in front of the camera.',
-            severity: 'warning',
-          });
+          const newCount = tabSwitchCount + 1; // Reuse the strike counter for out-of-frame
+          setTabSwitchCount(newCount);
+          if (newCount >= 5) {
+            setSnackbar({
+              open: true,
+              message: 'Examinee left the camera radius too many times. Exam locked.',
+              severity: 'error',
+            });
+            window.dispatchEvent(new Event('force-submit-exam'));
+          } else {
+            setSnackbar({
+              open: true,
+              message: `Warning: Please stay inside the camera radius! (${newCount}/5 warnings)`,
+              severity: 'warning',
+            });
+          }
         }
       }
-    }, 2000);
+    }, 2500);
 
     return () => clearInterval(interval);
   }, [model, preventTabSwitch, isSubmitted]);
