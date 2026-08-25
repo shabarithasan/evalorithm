@@ -190,142 +190,26 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
     private List<Question> generateQuestionsForTopic(Subject subject, Department department,
                                                       Unit unit, Topic topic, User user, int numQuestions) {
         List<Question> result = new ArrayList<>();
-        String groqKey = System.getenv("GROQ_API_KEY");
-        if (groqKey == null) {
-            groqKey = "placeholder_key_replace_me_in_env";
-        }
-        int maxRetries = 3;
-        for (int attempt = 0; attempt < maxRetries; attempt++) {
-            try {
-                org.springframework.web.client.RestTemplate restTemplate = new org.springframework.web.client.RestTemplate();
-                org.springframework.http.HttpHeaders headers = new org.springframework.http.HttpHeaders();
-                headers.setContentType(org.springframework.http.MediaType.APPLICATION_JSON);
-
-                String prompt = "You are an expert professor. Generate exactly " + numQuestions + " multiple choice questions for the topic '" + topic.getName() + "' under the unit '" + unit.getName() + "' for the subject '" + subject.getName() + "'. Return ONLY a JSON array of objects. Each object must have keys: 'questionText', 'optionA', 'optionB', 'optionC', 'optionD', 'correctOption' (must be exactly the string of the correct option text), and 'explanation'. No markdown, no markdown blocks, just raw JSON array.";
-
-                Map<String, Object> req = new HashMap<>();
-                req.put("messages", List.of(Map.of("role", "user", "content", prompt)));
-                req.put("temperature", 0.3);
-
-                String response = null;
-                try {
-                    headers.setBearerAuth(groqKey);
-                    req.put("model", "openai/gpt-oss-20b");
-                    req.put("max_tokens", 6000);
-                    org.springframework.http.HttpEntity<Map<String, Object>> entity = new org.springframework.http.HttpEntity<>(req, headers);
-                    response = restTemplate.postForObject("https://api.groq.com/openai/v1/chat/completions", entity, String.class);
-                } catch (Exception groqErr) {
-                    if (groqErr.getMessage() != null && groqErr.getMessage().contains("429")) {
-                        throw groqErr; // Rethrow so the outer loop can sleep and retry!
-                    }
-                    log.warn("Groq API failed (" + groqErr.getMessage() + "), falling back to OpenRouter...");
-                    String orKey = System.getenv("OPENROUTER_API_KEY");
-                    if (orKey == null) {
-                        orKey = "sk-or-v1-" + "574b829eec72bcd6157835ddc75d51b8c7234a7a8c60c8aa5c29108995b68596";
-                    }
-                    headers.setBearerAuth(orKey);
-                    req.put("model", "meta-llama/llama-3-8b-instruct:free");
-                    req.put("max_tokens", 4000);
-                    org.springframework.http.HttpEntity<Map<String, Object>> entity = new org.springframework.http.HttpEntity<>(req, headers);
-                    response = restTemplate.postForObject("https://openrouter.ai/api/v1/chat/completions", entity, String.class);
-                }
-                
-                com.fasterxml.jackson.databind.JsonNode root = new com.fasterxml.jackson.databind.ObjectMapper().readTree(response);
-                String respContent = root.path("choices").get(0).path("message").path("content").asText();
-            
-            respContent = respContent.replaceAll("^```(?:json)?\\s*", "").replaceAll("\\s*```$", "").trim();
-            
-            com.fasterxml.jackson.databind.JsonNode arr = new com.fasterxml.jackson.databind.ObjectMapper().readTree(respContent);
-            for (com.fasterxml.jackson.databind.JsonNode qNode : arr) {
-                String qText = qNode.path("questionText").asText();
-                String optA = qNode.path("optionA").asText();
-                String optB = qNode.path("optionB").asText();
-                String optC = qNode.path("optionC").asText();
-                String optD = qNode.path("optionD").asText();
-                String correct = qNode.path("correctOption").asText();
-                String expl = qNode.path("explanation").asText();
-                
-                String optionsJson = new com.fasterxml.jackson.databind.ObjectMapper().writeValueAsString(Arrays.asList(optA, optB, optC, optD));
-
-                Question q = Question.builder()
-                        .title(qText)
-                        .description(qText)
-                        .questionType(QuestionType.MCQ)
-                        .difficulty(QuestionDifficulty.MEDIUM)
-                        .bloomLevel(BloomLevel.K2_UNDERSTAND)
-                        .marks(1)
-                        .estimatedTime(2)
-                        .explanation(expl)
-                        .subject(subject)
-                        .unit(unit)
-                        .topic(topic)
-                        .department(department)
-                        .status(QuestionStatus.APPROVED)
-                        .createdBy(user)
-                        .updatedBy(user)
-                        .build();
-                q = questionRepository.save(q);
-                
-                List<MCQOption> mcqOptions = new ArrayList<>();
-                mcqOptions.add(MCQOption.builder().question(q).optionLabel("A").optionText(optA).isCorrect(optA.equals(correct)).build());
-                mcqOptions.add(MCQOption.builder().question(q).optionLabel("B").optionText(optB).isCorrect(optB.equals(correct)).build());
-                mcqOptions.add(MCQOption.builder().question(q).optionLabel("C").optionText(optC).isCorrect(optC.equals(correct)).build());
-                mcqOptions.add(MCQOption.builder().question(q).optionLabel("D").optionText(optD).isCorrect(optD.equals(correct)).build());
-                q.getMcqOptions().addAll(mcqOptions);
-                q = questionRepository.save(q);
-                
-                AIQuestion ai = AIQuestion.builder()
-                        .questionText(qText)
-                        .questionType("MCQ")
-                        .difficulty(AIDifficulty.MEDIUM)
-                        .bloomLevel("K2_UNDERSTAND")
-                        .options(optionsJson)
-                        .correctAnswer(correct)
-                        .explanation(expl)
-                        .subject(subject)
-                        .unit(unit)
-                        .topic(topic)
-                        .department(department)
-                        .isApproved(true)
-                        .createdBy(user)
-                        .sourcePrompt("Groq API: " + topic.getName())
-                        .modelVersion("groq-llama3-8b")
-                        .confidenceScore(0.95)
-                        .question(q)
-                        .build();
-                aiQuestionRepository.save(ai);
-                result.add(q);
-            }
-                return result;
-            } catch (Exception e) {
-                if (e.getMessage() != null && e.getMessage().contains("429")) {
-                    log.warn("Rate limit hit, attempt " + (attempt + 1) + " of " + maxRetries + ". Waiting 12 seconds...");
-                    if (attempt == maxRetries - 1) {
-                        log.error("All AI generation attempts failed due to rate limits. Generating a dummy question to prevent crash.");
-                        break;
-                    }
-                    try { Thread.sleep(12000); } catch (InterruptedException ie) { Thread.currentThread().interrupt(); }
-                } else {
-                    log.error("Groq API error", e);
-                    if (attempt == maxRetries - 1) {
-                        log.error("All AI generation attempts failed. Generating a dummy question to prevent crash.");
-                        break;
-                    }
-                }
-            }
-        }
+        log.info("Generating {} template questions for topic '{}' in unit '{}'", numQuestions, topic.getName(), unit.getName());
         
-        // If we get here and result is empty, the AI completely failed. Provide a dummy question so the user isn't blocked.
-        if (result.isEmpty()) {
-            Question dummy = Question.builder()
-                    .title("What is the primary focus of " + topic.getName() + "?")
-                    .description("Auto-generated dummy question due to AI limits.")
+        List<QuestionTemplate> templates = questionTemplates.getTemplates("MCQ", "MEDIUM");
+        
+        for (int i = 0; i < Math.min(numQuestions, templates.size()); i++) {
+            QuestionTemplate tmpl = templates.get(i);
+            String qText = questionTemplates.fillPlaceholders(tmpl.getText(), subject.getName(), topic.getName(), unit.getName());
+            String explanation = questionTemplates.fillPlaceholders(tmpl.getExplanation(), subject.getName(), topic.getName(), unit.getName());
+            String[] options = tmpl.getOptions();
+            int correctIdx = tmpl.getCorrectIndex();
+
+            Question q = Question.builder()
+                    .title(qText)
+                    .description(qText)
                     .questionType(QuestionType.MCQ)
                     .difficulty(QuestionDifficulty.MEDIUM)
                     .bloomLevel(BloomLevel.K2_UNDERSTAND)
                     .marks(1)
-                    .estimatedTime(1)
-                    .explanation("The AI generation failed due to API rate limits, so this placeholder was created.")
+                    .estimatedTime(2)
+                    .explanation(explanation)
                     .subject(subject)
                     .unit(unit)
                     .topic(topic)
@@ -334,19 +218,26 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
                     .createdBy(user)
                     .updatedBy(user)
                     .build();
-            dummy = questionRepository.save(dummy);
+            q = questionRepository.save(q);
 
+            String[] labels = {"A", "B", "C", "D"};
             List<MCQOption> mcqOptions = new ArrayList<>();
-            mcqOptions.add(MCQOption.builder().question(dummy).optionLabel("A").optionText("Option 1").isCorrect(true).build());
-            mcqOptions.add(MCQOption.builder().question(dummy).optionLabel("B").optionText("Option 2").isCorrect(false).build());
-            mcqOptions.add(MCQOption.builder().question(dummy).optionLabel("C").optionText("Option 3").isCorrect(false).build());
-            mcqOptions.add(MCQOption.builder().question(dummy).optionLabel("D").optionText("Option 4").isCorrect(false).build());
-            dummy.getMcqOptions().addAll(mcqOptions);
-            dummy = questionRepository.save(dummy);
-            
-            result.add(dummy);
+            for (int j = 0; j < Math.min(options.length, 4); j++) {
+                mcqOptions.add(MCQOption.builder()
+                        .question(q)
+                        .optionLabel(labels[j])
+                        .optionText(options[j])
+                        .isCorrect(j == correctIdx)
+                        .build());
+            }
+            q.getMcqOptions().addAll(mcqOptions);
+            q = questionRepository.save(q);
+
+            result.add(q);
+            log.info("Saved question {} for topic '{}'", i + 1, topic.getName());
         }
         
+        log.info("Successfully generated {} questions for topic '{}'", result.size(), topic.getName());
         return result;
     }
 
