@@ -47,6 +47,8 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
     private final AIQuestionRepository aiQuestionRepository;
     private final ExamRepository examRepository;
     private final ExamQuestionRepository examQuestionRepository;
+    private final ExamStudentRepository examStudentRepository;
+    private final StudentProfileRepository studentProfileRepository;
     private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
     private final QuestionTemplates questionTemplates;
@@ -287,6 +289,19 @@ public class SyllabusUploadServiceImpl implements SyllabusUploadService {
                     .build();
 
             examQuestionRepository.save(eq);
+        }
+
+        List<StudentProfile> students = studentProfileRepository.findByDepartmentIdAndSemesterId(
+                department.getId(), subject.getSemester().getId());
+        
+        for (StudentProfile sp : students) {
+            ExamStudent es = ExamStudent.builder()
+                    .exam(exam)
+                    .studentProfile(sp)
+                    .assignedAt(LocalDateTime.now())
+                    .isEligible(true)
+                    .build();
+            examStudentRepository.save(es);
         }
 
         return SyllabusUploadResponse.CreatedExamInfo.builder()
