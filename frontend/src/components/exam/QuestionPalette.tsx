@@ -3,7 +3,7 @@ import { Box, Typography, Paper } from '@mui/material';
 import { AnswerStatusType, StudentAnswer } from '../../types';
 
 interface QuestionPaletteProps {
-  totalQuestions: number;
+  questions: any[];
   currentIndex: number;
   answers: Record<number, StudentAnswer>;
   onJumpToQuestion: (index: number) => void;
@@ -25,7 +25,7 @@ const legendItems: { label: string; color: string }[] = [
 ];
 
 const QuestionPalette: React.FC<QuestionPaletteProps> = ({
-  totalQuestions,
+  questions,
   currentIndex,
   answers,
   onJumpToQuestion,
@@ -65,7 +65,7 @@ const QuestionPalette: React.FC<QuestionPaletteProps> = ({
       </Typography>
 
       <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 0.75, mb: 2 }}>
-        {Array.from({ length: totalQuestions }, (_, i) => {
+        {Array.from({ length: questions.length }, (_, i) => {
           const colors = getButtonColor(i);
           const isCurrent = i === currentIndex;
 

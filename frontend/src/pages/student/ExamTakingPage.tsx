@@ -169,23 +169,16 @@ const ExamTakingPage: React.FC = () => {
       }
 
       if (res && res.success) {
-        setExamTitle(res.data.examTitle || 'Exam');
+        setExamTitle(res.data.title || res.data.examTitle || 'Exam');
         setDurationMinutes(res.data.durationMinutes || 60);
         setPreventTabSwitch(res.data.preventTabSwitch || false);
 
-        const totalQuestions = res.data.totalQuestions || 0;
-        if (totalQuestions > 0) {
-          const loadedQuestions: LiveExamQuestion[] = [];
-          for (let i = 0; i < totalQuestions; i++) {
-            try {
-              const qRes = await examTakingService.getQuestion(res.data.attemptId, i);
-              if (qRes.success) loadedQuestions.push(qRes.data);
-            } catch {}
-          }
+        const loadedQuestions = res.data.questions || [];
+        if (loadedQuestions.length > 0) {
           setQuestions(loadedQuestions);
 
           const initialAnswers: Record<number, StudentAnswer> = {};
-          loadedQuestions.forEach((q) => {
+          loadedQuestions.forEach((q: any) => {
             if (q.userAnswer) {
               initialAnswers[q.examQuestionId] = q.userAnswer;
             } else {
@@ -570,7 +563,7 @@ const ExamTakingPage: React.FC = () => {
 
         <Box sx={{ width: 280, p: 2, overflowY: 'auto', borderLeft: '1px solid', borderColor: 'grey.200', bgcolor: '#fff' }}>
           <QuestionPalette
-            totalQuestions={questions.length}
+            questions={questions}
             currentIndex={currentIndex}
             answers={answers}
             onJumpToQuestion={handleJumpToQuestion}
